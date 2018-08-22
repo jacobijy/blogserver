@@ -1,15 +1,17 @@
 {
-  "compilerOptions": {
-      "outDir": "./dist/",
-      "sourceMap": true,
-      "noImplicitAny": true,
-      "module": "commonjs",
-      "target": "es6",
-      "allowSyntheticDefaultImports": true,
-      "resolveJsonModule": true
-  },
-  "include": [
-  ],
-  "exclude": [
-  ]
+	"compilerOptions": {
+		"outDir": "./dist/",
+		"sourceMap": true,
+		"noImplicitAny": true,
+		"module": "commonjs",
+		"target": "es6",
+		"allowSyntheticDefaultImports": true,
+		"resolveJsonModule": true
+	},
+	"include": [
+		"*/**/*"
+	],
+	"exclude": [
+		"test/"
+	],
 }
