@@ -8,7 +8,7 @@ const api = Router();
 
 api.get('/', (req, res, next) => {
 
-})
+});
 
 // load
 api.get('/article',  article.loadArticle);

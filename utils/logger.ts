@@ -1,7 +1,8 @@
-import log4js from 'log4js';
+import log4js, { Levels, Level } from 'log4js';
+import Express from 'express';
 log4js.configure('./utils/config/log4js_conf.json');
 
-const levels = {
+const levels: { [key: string]: Level } = {
 	trace: log4js.levels.TRACE,
 	debug: log4js.levels.DEBUG,
 	info: log4js.levels.INFO,
@@ -11,13 +12,13 @@ const levels = {
 };
 
 export default function logger(name = 'default') {
-	const loggerTemp = log4js.getLogger(name);
-	return loggerTemp;
+	return log4js.getLogger(name);
 } // 配合 express 使用的方法
 
-export function use(app, level) {
+export function use(app: Express.Express, level: string) {
+	level = level === '' ? 'debug' : level;
 	app.use(log4js.connectLogger(log4js.getLogger('http'), {
-		level: levels[level] || levels.debug,
+		level,
 		format: ':method :url :status'
 	}));
 }

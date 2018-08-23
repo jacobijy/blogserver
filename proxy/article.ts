@@ -1,7 +1,8 @@
-import { Article } from "../mongodb";
-import { Types } from "mongoose";
-import { config } from '../config'
+import { Article } from '../mongodb';
+import { Types } from 'mongoose';
+import { config } from '../config';
 import { IArticleSchema } from '../mongodb/article';
+import { IArticleInfo } from '../restful/v1/article';
 
 /**
  * 根据ID查找文章
@@ -11,8 +12,8 @@ import { IArticleSchema } from '../mongodb/article';
  * @param id ID
  * @param callback 回调函数
  */
-export function getArtileByid(id: Types.ObjectId, callback: (...args) => void) {
-    Article.findOne({ _id: id }, callback);
+export function getArtileByid(id: Types.ObjectId, callback: (...args: any[]) => void) {
+	Article.findOne({ _id: id }, callback);
 }
 
 /**
@@ -24,7 +25,7 @@ export function getArtileByid(id: Types.ObjectId, callback: (...args) => void) {
  * @param callback 回调函数
  */
 export function getArtileByArticleid(article_id: number) {
-    return Article.findOne({ article_id }).exec();
+	return Article.findOne({ article_id }).exec();
 }
 
 /**
@@ -38,16 +39,16 @@ export function getArtileByArticleid(article_id: number) {
  * @param images 插入图片
  * @param callback 回调函数
  */
-export function updateArtileByAritcleid(article_id: number, maintext: string, title: string, images: string, callback: (...args) => void) {
-    // callback
-    let option = { maintext, title }
-    if ('function' == typeof images) {
-        callback = images;
-    }
-    else {
-        option = Object.assign({}, option, { figure: images })
-    }
-    Article.findOneAndUpdate({ article_id: article_id }, { $set: option }, callback);
+export function updateArtileByAritcleid(article_id: number, maintext: string, title: string, images: string, callback: (...args: any[]) => void) {
+	// callback
+	let option = { maintext, title };
+	if ('function' == typeof images) {
+		callback = images;
+	}
+	else {
+		option = Object.assign({}, option, { figure: images });
+	}
+	Article.findOneAndUpdate({ article_id }, { $set: option }, callback);
 }
 
 /**
@@ -57,12 +58,12 @@ export function updateArtileByAritcleid(article_id: number, maintext: string, ti
  */
 
 export function getArticlesByAuthorId(author_id: Types.ObjectId, number: string) {
-    const query = Article.find({ author_id }, { article_id: 1, title: 1, maintext: 1, figure: 1, _id: 0 }); // `query` is an instance of `Query`
-    query
-        .sort({ article_id: -1 })
-        .limit(config.articleNumberLoadOnce)
-        .skip(parseInt(number))
-    return query.exec();
+	const query = Article.find({ author_id }, { article_id: 1, title: 1, maintext: 1, figure: 1, _id: 0 }); // `query` is an instance of `Query`
+	query
+		.sort({ article_id: -1 })
+		.limit(config.articleNumberLoadOnce)
+		.skip(parseInt(number));
+	return query.exec();
 }
 
 /**
@@ -71,9 +72,9 @@ export function getArticlesByAuthorId(author_id: Types.ObjectId, number: string)
  */
 
 export function getTitlesByAuthorId(author_id: Types.ObjectId) {
-    const query = Article.find({ author_id }, { article_id: 1, title: 1, _id: 0 })
-    query.sort({ article_id: -1 })
-    return query.exec()
+	const query = Article.find({ author_id }, { article_id: 1, title: 1, _id: 0 });
+	query.sort({ article_id: -1 });
+	return query.exec();
 }
 
 /**
@@ -88,14 +89,13 @@ export function getTitlesByAuthorId(author_id: Types.ObjectId) {
  * commitsnumber: Number
  * likedtime: Number
  * @param articleinfo
- * @param callback
  */
 
-export function newAndSave(articleinfo): Promise<IArticleSchema> {
-    let article = new Article();
-    article.author_id = Types.ObjectId(articleinfo.author_id);
-    article.figure = [];
-    article.maintext = articleinfo.maintext;
-    article.title = articleinfo.title;
-    return article.save();
+export function newAndSave(articleinfo: IArticleInfo): Promise<IArticleSchema> {
+	let article = new Article();
+	article.author_id = Types.ObjectId(articleinfo.author_id);
+	article.figure = [];
+	article.maintext = articleinfo.maintext;
+	article.title = articleinfo.title;
+	return article.save();
 }

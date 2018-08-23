@@ -1,14 +1,14 @@
-import { Attachment } from "../mongodb";
-import mongoose from "mongoose";
-import GridFs, { Grid } from "gridfs-stream";
-import { createReadStream } from "fs";
+import { Attachment } from '../mongodb';
+import mongoose from 'mongoose';
+import * as GridFs from 'gridfs-stream';
+import { createReadStream } from 'fs';
 
 const connection = mongoose.connection;
 
-let gfs: Grid;
+let gfs: GridFs.Grid;
 connection.once('open', () => {
-	gfs = GridFs(connection.db, mongoose.mongo)
-})
+	gfs = GridFs(connection.db, mongoose.mongo);
+});
 
 /**
  * 根据图片名字，查找图片
@@ -32,10 +32,17 @@ export function getFilebyMd5(md5: string) {
 	return Attachment.findOne({ md5 }).exec();
 }
 
-export function saveFileToDb(fileinfo) {
+export interface IFileInfo {
+	filename: string;
+	article_id?: number | string;
+	tmpfile: string;
+	filepath: string;
+}
+
+export function saveFileToDb(fileinfo: IFileInfo) {
 	const writestream = gfs.createWriteStream({
 		filename: fileinfo.filename,
-		article_id: parseInt(fileinfo.article_id)
+		// article_id: parseInt(fileinfo.article_id)
 	});
 	createReadStream(fileinfo.tmpfile).pipe(writestream);
 	return new Promise((resolve, reject) => {

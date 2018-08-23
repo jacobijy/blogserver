@@ -26,21 +26,21 @@ const ArticleSchema = new Schema({
 	commitsnumber: { type: Number, default: 0 },
 	likedtime: { type: Number, default: 0 },
 	title: { type: String }
-})
+});
 
 const Conuter = mongoose.model<ICounterSchema>('Counter');
 
 ArticleSchema.plugin(BaseModel);
 
-ArticleSchema.index({ "article_id": -1 }, { unique: true });
-ArticleSchema.index({ "author_id": 1 });
-ArticleSchema.pre<IArticleSchema>('save', function (next) {
-	var self = this;
-	Conuter.findOneAndUpdate({ _id: "entityid" }, { $inc: { seq: 1 } }, (err, counter) => {
-		if (err || counter === null) return next(err);
+ArticleSchema.index({ article_id: -1 }, { unique: true });
+ArticleSchema.index({ author_id: 1 });
+ArticleSchema.pre<IArticleSchema>('save', function(next) {
+	let self = this;
+	Conuter.findOneAndUpdate({ _id: 'entityid' }, { $inc: { seq: 1 } }, (err, counter) => {
+		if (err || counter === null) { return next(err); }
 		self.article_id = counter.seq + 1;
 		next();
-	})
-})
+	});
+});
 
 mongoose.model('Article', ArticleSchema);

@@ -9,9 +9,10 @@
 		"resolveJsonModule": true
 	},
 	"include": [
-		"*/**/*"
+		"**/*"
 	],
 	"exclude": [
-		"test/"
+		"test/",
+		"dist/"
 	],
 }

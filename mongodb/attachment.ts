@@ -11,7 +11,7 @@ export interface IAttachmentSchema extends Document {
 	metadata: any;
 }
 
-var attachmentSchema = new Schema({
+let attachmentSchema = new Schema({
 	length: { type: Number },
 	chunkSize: { type: Number },
 	uploadDate: { type: Date },
@@ -20,7 +20,7 @@ var attachmentSchema = new Schema({
 	contentType: { type: String },
 	aliases: [{ type: String }],
 	metadata: { type: Schema.Types.Mixed }
-}, { collection: "fs.files", versionKey: "" });
+}, { collection: 'fs.files', versionKey: '' });
 
 attachmentSchema.index({ filename: 1 });
 attachmentSchema.index({ article_id: -1 });
