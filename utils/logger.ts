@@ -1,8 +1,8 @@
-import log4js, { Levels, Level } from 'log4js';
-import Express from 'express';
+import * as log4js from 'log4js';
+import * as Express from 'express';
 log4js.configure('./log4js_conf.json');
 
-const levels: { [key: string]: Level } = {
+const levels: { [key: string]: log4js.Level } = {
     trace: log4js.levels.TRACE,
     debug: log4js.levels.DEBUG,
     info: log4js.levels.INFO,

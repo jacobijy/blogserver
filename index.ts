@@ -2,20 +2,20 @@
  * @Author: Jacobi
  * @Date: 2018-05-20 11:08:01
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-08-23 23:27:06
+ * @Last Modified time: 2018-08-24 01:15:28
  */
-import createError from 'http-errors';
-import express, { Request, Response, NextFunction } from 'express';
-import path from 'path';
+import * as createError from 'http-errors';
+import * as express from 'express';
+import * as path from 'path';
 import cookieParser from 'cookie-parser';
 import logger, { use as LoggerUse } from './utils/logger';
-import http from 'http';
+import * as http from 'http';
 import { config } from './config';
 import router from './routes';
 import restfulApi from './restful';
-import multer from 'multer';
-import connectredis from 'connect-redis';
-import session from 'express-session';
+import * as multer from 'multer';
+import * as connectredis from 'connect-redis';
+import * as session from 'express-session';
 import debugFunc from 'debug';
 // import ejsMate from 'ejs-mate';
 
@@ -149,7 +149,7 @@ app.use((req, res, next) => {
 });
 
 // error handler
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};

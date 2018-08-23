@@ -1,5 +1,5 @@
 import { Attachment } from '../mongodb';
-import mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
 import * as GridFs from 'gridfs-stream';
 import { createReadStream } from 'fs';
 

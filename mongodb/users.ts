@@ -1,8 +1,8 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import * as mongoose from 'mongoose';
 import BaseModel from './base_model';
 import utility from 'utility';
 
-export interface IUserSchema extends Document {
+export interface IUserSchema extends mongoose.Document {
     id: number;
     username: string;
     loginname: string;
@@ -19,7 +19,7 @@ export interface IUserSchema extends Document {
     accessToken: string;
 }
 
-const UserSchema = new Schema({
+const UserSchema = new mongoose.Schema({
     id: { type: Number },
     username: { type: String },
     loginname: { type: String },

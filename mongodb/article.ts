@@ -1,11 +1,11 @@
-import mongoose, { Schema, Document, Types } from 'mongoose';
+import * as mongoose from 'mongoose';
 import BaseModel from './base_model';
 import { ICounterSchema } from './counter';
 
-export interface IArticleSchema extends Document {
+export interface IArticleSchema extends mongoose.Document {
     id: number;
     article_id: number;
-    author_id: Types.ObjectId;
+    author_id: mongoose.Types.ObjectId;
     figure: string[];
     maintext: string;
     postdate: Date;
@@ -15,10 +15,10 @@ export interface IArticleSchema extends Document {
     title: string;
 }
 
-const ArticleSchema = new Schema({
+const ArticleSchema = new mongoose.Schema({
     id: { type: Number },
     article_id: { type: Number },
-    author_id: { type: Schema.Types.ObjectId },
+    author_id: { type: mongoose.Schema.Types.ObjectId },
     figure: { type: Array },
     maintext: { type: String },
     postdate: { type: Date, default: Date.now },

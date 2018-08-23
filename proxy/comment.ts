@@ -1,5 +1,4 @@
 import { Comment } from '../mongodb';
-import { Document } from 'mongoose';
 
 export function getCommentsByArticleId(articleId: number) {
     const query = Comment.find({ article_id: articleId });

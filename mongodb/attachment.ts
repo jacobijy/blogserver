@@ -1,6 +1,6 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import * as mongoose from 'mongoose';
 
-export interface IAttachmentSchema extends Document {
+export interface IAttachmentSchema extends mongoose.Document {
     length: number;
     chunckSize: number;
     uploadDate: Date;
@@ -11,7 +11,7 @@ export interface IAttachmentSchema extends Document {
     metadata: any;
 }
 
-let attachmentSchema = new Schema({
+let attachmentSchema = new mongoose.Schema({
     length: { type: Number },
     chunkSize: { type: Number },
     uploadDate: { type: Date },
@@ -19,7 +19,7 @@ let attachmentSchema = new Schema({
     filename: { type: String },
     contentType: { type: String },
     aliases: [{ type: String }],
-    metadata: { type: Schema.Types.Mixed }
+    metadata: { type: mongoose.Schema.Types.Mixed }
 }, { collection: 'fs.files', versionKey: '' });
 
 attachmentSchema.index({ filename: 1 });

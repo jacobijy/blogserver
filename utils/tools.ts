@@ -1,5 +1,5 @@
 import { hash, compare } from 'bcryptjs';
-import moment from 'moment';
+import * as moment from 'moment';
 
 moment.locale('zh-cn'); // 使用中文
 

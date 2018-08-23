@@ -4,14 +4,15 @@
   "description": "blog back end server",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "pm2 start ./dist/index.js --name='blogserver'"
   },
   "keywords": [
     "node",
     "typescript"
   ],
   "author": "jacobi",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/jacobijy/blogserver"
@@ -19,6 +20,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.3",
     "gridfs-stream": "^1.1.1",
     "ioredis": "^4.0.0",
