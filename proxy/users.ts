@@ -1,6 +1,6 @@
 import { User } from '../mongodb';
 import { v4 } from 'uuid';
-import utility from 'utility';
+import * as utility from 'utility';
 import { Types } from 'mongoose';
 
 /**
@@ -11,8 +11,8 @@ import { Types } from 'mongoose';
  * @param id 用户ID
  * @param callback 回调函数
  */
-export function getUserByid(id: Types.ObjectId, callback: (...args) => void) {
-	User.findOne({ _id: id }, callback);
+export function getUserByid(id: Types.ObjectId, callback: (...args: any[]) => void) {
+    User.findOne({ _id: id }, callback);
 }
 
 /**
@@ -23,7 +23,7 @@ export function getUserByid(id: Types.ObjectId, callback: (...args) => void) {
  * @param name 用户名称
  */
 export function getUserByName(name: string) {
-	return User.findOne({ loginname: name }).exec();
+    return User.findOne({ loginname: name }).exec();
 }
 
 /**
@@ -36,21 +36,27 @@ export function getUserByName(name: string) {
  * @param callback 回调函数
  */
 export function getUsersByQuery(query: any, opt: any) {
-	return User.find(query, '', opt).exec();
+    return User.find(query, '', opt).exec();
 }
 
-export function newAndSave(username: string, loginname: string, passhash: string, email: string, avatar_url: string, active = false) {
-	let user = new User();
-	user.username = username;
-	user.loginname = loginname;
-	user.password = passhash;
-	user.email = email;
-	user.avatar = avatar_url;
-	user.active = active;
-	user.accessToken = v4();
-	return user.save();
+export function newAndSave(
+    username: string,
+    loginname: string,
+    passhash: string,
+    email: string,
+    avatarUrl: string,
+    active = false) {
+    let user = new User();
+    user.username = username;
+    user.loginname = loginname;
+    user.password = passhash;
+    user.email = email;
+    user.avatar = avatarUrl;
+    user.active = active;
+    user.accessToken = v4();
+    return user.save();
 }
 
-export function makerAvatarUrl(email) {
-	return 'http://www.gravatar.com/avatar/' + utility.md5(email.toLowerCase()) + '?size=48';
+export function makerAvatarUrl(email: string) {
+    return 'http://www.gravatar.com/avatar/' + utility.md5(email.toLowerCase()) + '?size=48';
 }

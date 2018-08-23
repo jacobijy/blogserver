@@ -2,7 +2,7 @@
  * @Author: Jacobi
  * @Date: 2018-05-20 11:08:01
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-08-22 22:23:39
+ * @Last Modified time: 2018-08-23 23:27:06
  */
 import createError from 'http-errors';
 import express, { Request, Response, NextFunction } from 'express';
@@ -17,6 +17,7 @@ import multer from 'multer';
 import connectredis from 'connect-redis';
 import session from 'express-session';
 import debugFunc from 'debug';
+// import ejsMate from 'ejs-mate';
 
 const debug = debugFunc('blognode:server');
 
@@ -24,29 +25,29 @@ const RedisStore = connectredis(session);
 
 const app = express();
 // view engine setup
-console.log(path.join(__dirname, '../views'));
+logger().log(path.join(__dirname, '../views'));
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'html');
-app.engine('html', require('ejs-mate'));
+// app.engine('html', require('ejs-mate'));
 
 /**
  * Normalize a port into a number, string, or false.
  */
 
 function normalizePort(val: string) {
-	let port = parseInt(val, 10);
+    let portNun = parseInt(val, 10);
 
-	if (isNaN(port)) {
-		// named pipe
-		return val;
-	}
+    if (isNaN(portNun)) {
+        // named pipe
+        return val;
+    }
 
-	if (port >= 0) {
-		// port number
-		return port;
-	}
+    if (portNun >= 0) {
+        // port number
+        return portNun;
+    }
 
-	return false;
+    return false;
 }
 
 /**
@@ -67,27 +68,27 @@ const server = http.createServer(app);
  */
 
 function onError(error: NodeJS.ErrnoException) {
-	if (error.syscall !== 'listen') {
-		throw error;
-	}
+    if (error.syscall !== 'listen') {
+        throw error;
+    }
 
-	let bind = typeof port === 'string'
-		? 'Pipe ' + port
-		: 'Port ' + port;
+    let bind = typeof port === 'string'
+        ? 'Pipe ' + port
+        : 'Port ' + port;
 
-	// handle specific listen errors with friendly messages
-	switch (error.code) {
-		case 'EACCES':
-			console.error(bind + ' requires elevated privileges');
-			process.exit(1);
-			break;
-		case 'EADDRINUSE':
-			console.error(bind + ' is already in use');
-			process.exit(1);
-			break;
-		default:
-			throw error;
-	}
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case 'EACCES':
+            logger().error(bind + ' requires elevated privileges');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            logger().error(bind + ' is already in use');
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
 }
 
 /**
@@ -95,11 +96,11 @@ function onError(error: NodeJS.ErrnoException) {
  */
 
 function onListening() {
-	let addr = server.address();
-	let bind = typeof addr === 'string'
-		? 'pipe ' + addr
-		: 'port ' + addr.port;
-	debug('Listening on ' + bind);
+    let addr = server.address();
+    let bind = typeof addr === 'string'
+        ? 'pipe ' + addr
+        : 'port ' + addr.port;
+    debug('Listening on ' + bind);
 }
 
 /**
@@ -117,22 +118,22 @@ app.use(cookieParser(config.session_secret));
 app.use('/public', express.static(path.join(__dirname, './views/public')));
 app.use(multer({ dest: config.imageFileDir }).array('image'));
 app.use(session({
-	secret: config.session_secret,
-	store: new RedisStore({
-		port: config.redis_port,
-		host: config.redis_host,
-		db: config.redis_db,
-		pass: config.redis_password
-	}),
-	resave: false,
-	saveUninitialized: false
+    secret: config.session_secret,
+    store: new RedisStore({
+        port: config.redis_port,
+        host: config.redis_host,
+        db: config.redis_db,
+        pass: config.redis_password
+    }),
+    resave: false,
+    saveUninitialized: false
 }));
 
 app.use((req, res, next) => {
-	res.header('Access-Control-Allow-Origin', '*');
-	res.header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
-	res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
-	next();
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
+    res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
+    next();
 });
 
 app.use('/api', restfulApi);
@@ -140,20 +141,20 @@ app.use('/', router);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-	// console.log(next);
-	// next(createError(404));
-	// logger.error(res);
-	// res.send('404 NOT FOUND');
-	next(createError(404));
+    // console.log(next);
+    // next(createError(404));
+    // logger.error(res);
+    // res.send('404 NOT FOUND');
+    next(createError(404));
 });
 
 // error handler
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-	// set locals, only providing error in development
-	res.locals.message = err.message;
-	res.locals.error = req.app.get('env') === 'development' ? err : {};
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-	// render the error page
-	res.status(err.status || 500);
-	logger('http').error(err);
+    // render the error page
+    res.status(err.status || 500);
+    logger('http').error(err);
 });

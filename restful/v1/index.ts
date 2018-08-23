@@ -6,10 +6,6 @@ import comment from './comment';
 
 const api = Router();
 
-api.get('/', (req, res, next) => {
-
-});
-
 // load
 api.get('/article',  article.loadArticle);
 api.get('/titles', article.loadTitles);
