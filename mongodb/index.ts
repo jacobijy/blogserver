@@ -13,9 +13,7 @@ import { ICounterSchema } from './counter';
 import { ICommentSchema } from './comment';
 import { IAttachmentSchema } from './attachment';
 
-mongoose.connect(config.mongodb_conf, {
-    server: { poolSize: 20 }
-}, (err) => {
+mongoose.connect(config.mongodb_conf, { poolSize: 20, useNewUrlParser: true }, (err) => {
     if (err) {
         logger('default').log(config.mongodb_conf);
         logger('default').error('connect to %s error: ', config.mongodb_conf, err.message);
